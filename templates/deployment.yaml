@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "fullname" . }}
+  labels:
+    app: {{ template "name" . }}
+    chart: {{ template "chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ template "name" . }}
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "name" . }}
+        release: {{ .Release.Name }}
+    spec:
+      {{- if .Values.image.pullSecrets }}
+      imagePullSecrets:
+      {{- range .Values.image.pullSecrets }}
+        - name: {{ . }}
+      {{- end }}
+      {{- end }}
+      volumes:
+      - name: weechat-home
+        emptyDir: {}
+      containers:
+      - name: {{ template "fullname" . }}
+        image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy | quote }}
+        ports:
+        - name: ssh
+          containerPort: 22
+          protocol: TCP
+        - name: relay
+          containerPort: 9000
+          protocol: TCP
+        livenessProbe:
+          tcpSocket:
+            port: ssh
+          initialDelaySeconds: 15
+          periodSeconds: 20
+        readinessProbe:
+          tcpSocket:
+            port: ssh
+          initialDelaySeconds: 15
+          periodSeconds: 20
+        resources:
+          requests:
+            memory: {{ .Values.weechat.resources.requests.memory }}
+            cpu: {{ .Values.weechat.resources.requests.cpu }}
+        envFrom:
+        - configMapRef:
+            name: {{ template "fullname" . }}
+        volumeMounts:
+          - mountPath: /home/weechat
+            name: weechat-home
