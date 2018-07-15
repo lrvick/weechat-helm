@@ -7,4 +7,6 @@ metadata:
     chart: {{ template "chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
+data:
   AUTHORIZED_KEYS: "{{ .Values.weechat.authorizedKeys }}"
+  USER: "{{ .Values.weechat.user }}"

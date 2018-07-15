@@ -50,4 +50,21 @@ persistent disk.
 
 ## Production Deployment ##
 
-TODO
+1. Install helm chart
+
+    ```
+    helm install -n weechat .
+    ```
+
+2. Ensure weechat is pinholed to outside world via ingress such as nginx
+
+    ```
+    helm install \
+      --tls \
+      --name nginx-ingress \
+      --namespace kube-system \
+      stable/nginx-ingress \
+      --set rbac.create=true \
+      --set tcp.22="default/weechat:22"
+      --set tcp.9000="default/weechat:9000"
+    ```
