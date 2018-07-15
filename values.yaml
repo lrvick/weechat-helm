@@ -3,7 +3,7 @@ domain: "weechat.local"
 image:
   registry: docker.io
   repository: lrvick/weechat
-  tag: "{{ .Chart.AppVersion }}"
+  tag: 0.1.1
   pullPolicy: IfNotPresent
 
 persistence:
