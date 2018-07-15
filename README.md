@@ -26,7 +26,6 @@ persistent disk.
 2. Install Helm dependencies and chart
 
     ```
-    helm dependency update
     helm install -n weechat .
     ```
 
@@ -40,7 +39,7 @@ persistent disk.
 4. Add local DNS entry for minikube
 
     ```
-    sudo echo "192.168.99.100 weechat.local" >> /etc/hosts
+    echo "$(minikube ip) weechat.local" | sudo tee -a /etc/hosts
     ```
 
 5. Connect with ssh
