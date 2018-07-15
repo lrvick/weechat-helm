@@ -25,8 +25,13 @@ spec:
       {{- end }}
       {{- end }}
       volumes:
-      - name: weechat-home
+      - name: data
+      {{- if .Values.persistence.enabled }}
+        persistentVolumeClaim:
+          claimName: {{ .Values.persistence.existingClaim | default (include "fullname" .) }}
+      {{- else }}
         emptyDir: {}
+      {{- end }}
       containers:
       - name: {{ template "fullname" . }}
         image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -50,11 +55,12 @@ spec:
           periodSeconds: 20
         resources:
           requests:
-            memory: {{ .Values.weechat.resources.requests.memory }}
-            cpu: {{ .Values.weechat.resources.requests.cpu }}
+            memory: {{ .Values.resources.requests.memory }}
+            cpu: {{ .Values.resources.requests.cpu }}
         envFrom:
         - configMapRef:
             name: {{ template "fullname" . }}
         volumeMounts:
-          - mountPath: /home/weechat
-            name: weechat-home
+        - name: data
+          mountPath: {{ .Values.persistence.mountPath }}
+          subPath: {{ .Values.persistence.subPath }}
