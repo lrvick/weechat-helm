@@ -10,3 +10,4 @@ metadata:
 data:
   AUTHORIZED_KEYS: "{{ .Values.weechat.authorizedKeys }}"
   USER: "{{ .Values.weechat.user }}"
+  TZ: "{{ .Values.weechat.timezone }}"

@@ -17,6 +17,6 @@ spec:
     protocol: TCP
     targetPort: ssh
   - name: relay
-    port: 9000
+    port: 9001
     protocol: TCP
     targetPort: relay

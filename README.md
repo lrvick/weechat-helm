@@ -66,5 +66,5 @@ persistent disk.
       stable/nginx-ingress \
       --set rbac.create=true \
       --set tcp.22="default/weechat:22"
-      --set tcp.9000="default/weechat:9000"
+      --set tcp.9001="default/weechat:9001"
     ```
