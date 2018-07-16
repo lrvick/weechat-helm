@@ -3,7 +3,7 @@ domain: "weechat.local"
 image:
   registry: docker.io
   repository: lrvick/weechat
-  tag: 0.1.19
+  tag: 0.1.20
   pullPolicy: IfNotPresent
 
 persistence:
